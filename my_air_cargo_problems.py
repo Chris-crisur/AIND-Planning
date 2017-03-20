@@ -210,7 +210,8 @@ class AirCargoProblem(Problem):
         executed.
         '''
 
-        count = len(decode_state(node.state, self.state_map).pos) - len(self.goal)
+        count = len([s for (i, s) in enumerate(self.state_map)
+                     if s in self.goal and node.state[i] == "F"])
         return count
 
 

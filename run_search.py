@@ -126,7 +126,7 @@ if __name__=="__main__":
     elif args.problems and args.searches:
         main(list(sorted(set(args.problems))), list(sorted(set((args.searches)))))
     else:
-        main([3],[9])
+        main([1],[8,9])
         print()
         parser.print_help()
         print(INVALID_ARG_MSG)
