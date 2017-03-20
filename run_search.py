@@ -48,9 +48,9 @@ class PrintableProblem(InstrumentedProblem):
     def __repr__(self):
         return '{:^10d}  {:^10d}  {:^10d}'.format(self.succs, self.goal_tests, self.states)
 
-
+start = 0
 def run_search(problem, search_function, parameter=None):
-
+    global start
     start = timer()
     ip = PrintableProblem(problem)
     if parameter is not None:
@@ -58,9 +58,12 @@ def run_search(problem, search_function, parameter=None):
     else:
         node = search_function(ip)
     end = timer()
-    print("\nExpansions   Goal Tests   New Nodes")
+    print("Expansions\tGoal Tests\tNew Nodes")
     print("{}\n".format(ip))
-    show_solution(node, end - start)
+    if node is not None:
+        show_solution(node, end - start)
+    else:
+        print("Timeout (10 minutes)")
     print()
 
 
@@ -123,6 +126,7 @@ if __name__=="__main__":
     elif args.problems and args.searches:
         main(list(sorted(set(args.problems))), list(sorted(set((args.searches)))))
     else:
+        main([3],[9])
         print()
         parser.print_help()
         print(INVALID_ARG_MSG)
