@@ -129,22 +129,10 @@ class AirCargoProblem(Problem):
             e.g. 'FTTTFF'
         :return: list of Action objects
         """
-        possible_actions = []
         kb = PropKB()
         # extend state to a (positive) knowledge base
         kb.tell(decode_state(state, self.state_map).pos_sentence())
-        for action in self.actions_list:
-            is_possible = True
-            # not possible if current state doesn't allow
-            for pos_clause in action.precond_pos:
-                if pos_clause not in kb.clauses:
-                    is_possible = False
-            # not possible if state allows but is part of a negative precondition
-            for neg_clause in action.precond_neg:
-                if neg_clause in kb.clauses:
-                    is_possible = False
-            if is_possible:
-                possible_actions.append(action)
+        possible_actions = [a for a in self.actions_list if a.check_precond(kb, a.args)]
         return possible_actions
 
     def result(self, state: str, action: Action):

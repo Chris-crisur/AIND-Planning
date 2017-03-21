@@ -534,10 +534,7 @@ class PlanningGraph():
         :param node_s2: PgNode_s
         :return: bool
         '''
-        for i,(s1, s2) in enumerate(zip(node_s1.parents,node_s2.parents)):
-            if not s1.is_mutex(s2):
-                return False
-        return True
+        return all(a.is_mutex(b) is True for b in node_s2.parents for a in node_s1.parents)
 
     def h_levelsum(self) -> int:
         '''The sum of the level costs of the individual goals (admissible if goals independent)
